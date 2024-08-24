@@ -41,7 +41,7 @@ const App: React.FC = () => {
           <Route path="/" element={<Navigate to="/login" />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/word-input" element={<WordInputPage />} />
+          <Route path="/wordinput" element={<WordInputPage />} />
         </Routes>
       </Router>
     </ThemeProvider>
