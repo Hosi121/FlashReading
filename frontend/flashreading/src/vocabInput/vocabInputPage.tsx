@@ -7,7 +7,8 @@ import {
   Button,
   Container
 } from '@mui/material';
-import VocabInput from './VocabInput';
+import VocabInput from './vocabInput';
+import { sendChatMessage, ChatRequest, ChatResponse } from '../../types/chat';
 
 interface Word {
   id: number;
@@ -21,6 +22,7 @@ const VocabInputPage: React.FC = () => {
     { id: 2, text: 'TypeScript' },
     { id: 3, text: 'Material-UI' }
   ]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleWordInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCurrentWord(e.target.value);
@@ -41,9 +43,24 @@ const VocabInputPage: React.FC = () => {
     setWords(words.filter((word) => word.id !== idToDelete));
   };
 
-  const handleSubmit = () => {
-    console.log('決定ボタンが押されました。登録された単語:', words.map(w => w.text));
-    // ここで実際のページ遷移やデータ送信のロジックを実装します
+  const handleSubmit = async () => {
+    setIsLoading(true);
+    const wordList = words.map(w => w.text).join(',');
+    
+    try {
+      const chatRequest: ChatRequest = {
+        message: wordList,
+      };
+
+      const response: ChatResponse = await sendChatMessage(chatRequest);
+      console.log('バックエンドからの応答:', response);
+      // TODO: レスポンス処理（例：状態更新、画面遷移など）
+    } catch (error) {
+      console.error('エラーが発生しました:', error);
+      // TODO: エラーハンドリング（例：エラーメッセージ表示）
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -90,9 +107,10 @@ const VocabInputPage: React.FC = () => {
             variant="contained" 
             color="primary" 
             onClick={handleSubmit}
+            disabled={isLoading}
             sx={{ px: 4, py: 1, fontSize: '1.1rem' }}
           >
-            決定
+            {isLoading ? '送信中...' : '決定'}
           </Button>
         </Box>
       </Container>
