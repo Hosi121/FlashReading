@@ -6,8 +6,8 @@ interface ChunkDisplayProps {
 }
 
 export const ChunkDisplay: React.FC<ChunkDisplayProps> = ({ chunk }) => (
-    <Paper elevation={3} sx={{ width: '80%', height: 100, display: 'flex', justifyContent: 'center', alignItems: 'center', mb: 2 }}>
-        <Typography variant="h5" align="center">
+    <Paper elevation={3} sx={{ width: '85%', height: 250, display: 'flex', justifyContent: 'center', alignItems: 'center', mb: 2 }}>
+        <Typography variant="h1" align="center">
             {chunk}
         </Typography>
     </Paper>
