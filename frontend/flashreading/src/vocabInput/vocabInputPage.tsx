@@ -1,37 +1,48 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { 
   Box, 
-  TextField, 
-  IconButton, 
   Typography, 
   Chip, 
   Paper, 
   Button,
   Container
 } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
+import VocabInput from './VocabInput';
 
-const vocabInputPage = () => {
-  const [currentWord, setCurrentWord] = useState('');
-  const [words, setWords] = useState(['React', 'TypeScript', 'Material-UI']);
+interface Word {
+  id: number;
+  text: string;
+}
 
-  const handleWordInputChange = (e) => {
+const VocabInputPage: React.FC = () => {
+  const [currentWord, setCurrentWord] = useState<string>('');
+  const [words, setWords] = useState<Word[]>([
+    { id: 1, text: 'React' },
+    { id: 2, text: 'TypeScript' },
+    { id: 3, text: 'Material-UI' }
+  ]);
+
+  const handleWordInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCurrentWord(e.target.value);
   };
 
   const handleAddWord = () => {
     if (currentWord.trim() !== '') {
-      setWords([...words, currentWord.trim()]);
+      const newWord: Word = {
+        id: Date.now(),
+        text: currentWord.trim()
+      };
+      setWords([...words, newWord]);
       setCurrentWord('');
     }
   };
 
-  const handleDeleteWord = (wordToDelete) => {
-    setWords(words.filter((word) => word !== wordToDelete));
+  const handleDeleteWord = (idToDelete: number) => {
+    setWords(words.filter((word) => word.id !== idToDelete));
   };
 
   const handleSubmit = () => {
-    console.log('決定ボタンが押されました。登録された単語:', words);
+    console.log('決定ボタンが押されました。登録された単語:', words.map(w => w.text));
     // ここで実際のページ遷移やデータ送信のロジックを実装します
   };
 
@@ -52,30 +63,17 @@ const vocabInputPage = () => {
           <Typography variant="h5" align="center" gutterBottom>
             覚えたい単語を入力しよう！
           </Typography>
-          <Box sx={{ display: 'flex', mb: 2 }}>
-            <TextField
-              value={currentWord}
-              onChange={handleWordInputChange}
-              variant="outlined"
-              placeholder="単語を入力してください"
-              fullWidth
-              size="small"
-              sx={{ mr: 1 }}
-            />
-            <IconButton
-              onClick={handleAddWord}
-              color="primary"
-              sx={{ bgcolor: 'primary.main', color: 'white', '&:hover': { bgcolor: 'primary.dark' } }}
-            >
-              <AddIcon />
-            </IconButton>
-          </Box>
-          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-            {words.map((word, index) => (
+          <VocabInput
+            currentWord={currentWord}
+            onWordInputChange={handleWordInputChange}
+            onAddWord={handleAddWord}
+          />
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mt: 2 }}>
+            {words.map((word) => (
               <Chip
-                key={index}
-                label={word}
-                onDelete={() => handleDeleteWord(word)}
+                key={word.id}
+                label={word.text}
+                onDelete={() => handleDeleteWord(word.id)}
                 color="primary"
                 variant="outlined"
                 sx={{ 
@@ -102,4 +100,4 @@ const vocabInputPage = () => {
   );
 };
 
-export default vocabInputPage;
+export default VocabInputPage;

@@ -2,13 +2,13 @@ import React from 'react';
 import { Box, IconButton, TextField } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 
-interface WordInputProps {
+interface VocabInputProps {
   currentWord: string;
   onWordInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onAddWord: () => void;
 }
 
-const WordInput: React.FC<WordInputProps> = ({ currentWord, onWordInputChange, onAddWord }) => {
+const VocabInput: React.FC<VocabInputProps> = ({ currentWord, onWordInputChange, onAddWord }) => {
   return (
     <Box sx={{ my: 2, display: 'flex', alignItems: 'center' }}>
       <TextField
@@ -35,4 +35,4 @@ const WordInput: React.FC<WordInputProps> = ({ currentWord, onWordInputChange, o
   );
 };
 
-export default WordInput;
+export default VocabInput;
