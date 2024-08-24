@@ -50,7 +50,7 @@ export const FlashDisplay: React.FC<FlashDisplayProps> = ({ sentences, onComplet
         if (currentChunkIndex < chunks.length) {
             const timer = setTimeout(() => {
                 setCurrentChunkIndex(prevIndex => prevIndex + 1);
-            }, speed); // speedを使用
+            }, speed);
 
             return () => clearTimeout(timer);
         } else if (currentSentenceIndex < sentences.length - 1) {
@@ -61,7 +61,7 @@ export const FlashDisplay: React.FC<FlashDisplayProps> = ({ sentences, onComplet
     }, [currentChunkIndex, chunks, currentSentenceIndex, sentences, onComplete, speed]);
 
     const handleSpeedChange = (event: Event, newValue: number | number[]) => {
-        setSpeed(newValue as number);
+        setSpeed(2000 - (newValue as number));
     };
 
     return (
@@ -71,14 +71,15 @@ export const FlashDisplay: React.FC<FlashDisplayProps> = ({ sentences, onComplet
             <Box sx={{ width: '80%', mt: 2, mb: 2 }}>
                 <Typography gutterBottom>速度調整（ミリ秒）</Typography>
                 <Slider
-                    value={speed}
+                    value={2000 - speed}
                     onChange={handleSpeedChange}
                     aria-labelledby="speed-slider"
                     step={100}
                     marks
-                    min={100}
-                    max={2000}
+                    min={0}
+                    max={1900}
                     valueLabelDisplay="auto"
+                    valueLabelFormat={(value) => `${2000 - value} ms`}
                 />
             </Box>
             <Button variant="contained" color="primary" onClick={onComplete}>
