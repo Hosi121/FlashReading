@@ -10,6 +10,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import Register from "./auth/Register";
 import Login from "./auth/Login";
+import WordInputPage from "./vocabInput/vocabInputPage"; // WordInputPageをインポート
 
 const App: React.FC = () => {
   const [loading, setLoading] = useState(true);
@@ -40,6 +41,7 @@ const App: React.FC = () => {
           <Route path="/" element={<Navigate to="/login" />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/wordinput" element={<WordInputPage />} />
         </Routes>
       </Router>
     </ThemeProvider>
