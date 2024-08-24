@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Container, Typography, List, ListItem, ListItemText } from '@mui/material';
+import { Container, Typography, List, ListItem, ListItemText, Box } from '@mui/material';
 import WordInput from './vocabInput';
 
 const WordInputPage: React.FC = () => {
@@ -18,23 +18,40 @@ const WordInputPage: React.FC = () => {
   };
 
   return (
-    <Container maxWidth="sm">
-      <Typography variant="h4" gutterBottom>
-        覚えたい単語を入力しよう！
-      </Typography>
-      <WordInput
-        currentWord={currentWord}
-        onWordInputChange={handleWordInputChange}
-        onAddWord={handleAddWord}
-      />
-      <List>
-        {words.map((word, index) => (
-          <ListItem key={index}>
-            <ListItemText primary={word} />
-          </ListItem>
-        ))}
-      </List>
-    </Container>
+    <Box
+      sx={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        minHeight: '100vh',
+        backgroundColor: '#f0f0f0', // 背景色を追加（必要に応じて）
+      }}
+    >
+      <Container 
+        maxWidth="md" 
+        sx={{ 
+          display: 'flex', 
+          flexDirection: 'column', 
+          alignItems: 'center', 
+        }}
+      >
+        <Typography variant="h4" gutterBottom>
+          覚えたい単語を入力しよう！
+        </Typography>
+        <WordInput
+          currentWord={currentWord}
+          onWordInputChange={handleWordInputChange}
+          onAddWord={handleAddWord}
+        />
+        <List sx={{ width: '100%', mt: 2 }}>
+          {words.map((word, index) => (
+            <ListItem key={index}>
+              <ListItemText primary={word} />
+            </ListItem>
+          ))}
+        </List>
+      </Container>
+    </Box>
   );
 };
 
