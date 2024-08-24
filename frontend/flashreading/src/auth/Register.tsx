@@ -31,12 +31,6 @@ const Register: React.FC = () => {
   const validateForm = (): boolean => {
     const newErrors: { [key: string]: string } = {};
 
-    // メールアドレスのバリデーション
-    if (!formData.email.endsWith("@shizuoka.ac.jp")) {
-      newErrors.email =
-        "メールアドレスは@shizuoka.ac.jpで終わる必要があります。";
-    }
-
     // パスワードのバリデーション
     if (formData.password.length < 6) {
       newErrors.password = "パスワードは6文字以上である必要があります。";
