@@ -9,7 +9,7 @@ import {
   AuthContainer,
   FormBox,
   SubmitButton,
-} from "./AuthStyles";
+} from "./AuthStyle";
 
 const Register: React.FC = () => {
   // フォームデータの状態管理
