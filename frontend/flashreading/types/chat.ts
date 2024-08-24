@@ -1,18 +1,41 @@
+import api from "../services/api";
+
 export interface ChatRequest {
-  content: string;  // ユーザーから送信されるメッセージ
+  message: string;
 }
 
 export interface ChatResponse {
-  choices: Choice[]; // 応答の選択肢
+  id: string;
+  object: string;
+  created: number;
+  model: string;
+  usage: Usage;
+  choices: Choice[];
+}
+
+export interface Usage {
+  prompt_tokens: number;
+  completion_tokens: number;
+  total_tokens: number;
 }
 
 export interface Choice {
-  message: Message; // 各選択肢に含まれるメッセージ
+  message: ResponseMessage;
+  finish_reason: string;
+  index: number;
 }
 
-export interface Message {
-  role: string;     // メッセージの役割 (assistant, user, system)
-  content: string;  // メッセージの内容
+export interface ResponseMessage {
+  role: 'assistant' | 'user' | 'system';
+  content: string;
 }
 
-
+export const sendChatMessage = async (input: ChatRequest): Promise<ChatResponse> => {
+  try {
+    const response = await api.post<ChatResponse>("/chat/ask", input);
+    return response.data;
+  } catch (error) {
+    console.error("Failed to send chat message:", error);
+    throw error;
+  }
+};
