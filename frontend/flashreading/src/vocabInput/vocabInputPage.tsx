@@ -1,5 +1,3 @@
-// src/pages/WordInputPage.tsx
-
 import React, { useState } from 'react';
 import { Container, Typography, List, ListItem, ListItemText } from '@mui/material';
 import WordInput from './vocabInput';
@@ -22,7 +20,7 @@ const WordInputPage: React.FC = () => {
   return (
     <Container maxWidth="sm">
       <Typography variant="h4" gutterBottom>
-        単語入力ページ
+        覚えたい単語を入力しよう！
       </Typography>
       <WordInput
         currentWord={currentWord}
