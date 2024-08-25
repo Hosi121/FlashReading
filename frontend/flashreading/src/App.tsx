@@ -1,37 +1,53 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
-import "./App.css";
-import UserAnswer from "./components/UserAnswer";
+import React, { useState, useEffect } from "react";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Navigate,
+} from "react-router-dom";
+import theme from "./theme";
+import { ThemeProvider } from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
+import Register from "./auth/Register";
+import Login from "./auth/Login";
+import WordInputPage from "./vocabInput/vocabInputPage"; // WordInputPageをインポート
+import FlashPlayDemo from "./FlashDisplay/FlashDisplayDemo"; // FlashPlayDemoをインポート
 
-function App() {
-  const [count, setCount] = useState(0);
+const App: React.FC = () => {
+  const [loading, setLoading] = useState(true);
+  const [showSplash, setShowSplash] = useState(true);
+
+  useEffect(() => {
+    setLoading(false);
+    setShowSplash(false);
+  }, []);
+
+  const handleLoadingComplete = () => {
+    setLoading(false);
+  };
+
+  if (showSplash) {
+    return <div>Loading...</div>; // 必要に応じてSplashScreenコンポーネントを使ってください
+  }
+
+  if (loading) {
+    return <div>Loading...</div>; // 必要に応じてLoadingScreenコンポーネントを使ってください
+  }
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-        <UserAnswer correctWords={["apple", "banana"]} />
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <Router>
+        <Routes>
+          <Route path="/" element={<Navigate to="/login" />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/wordinput" element={<WordInputPage />} />
+          <Route path="/demo" element={<FlashPlayDemo/>}/>
+        </Routes>
+      </Router>
+    </ThemeProvider>
   );
-}
+};
 
 export default App;
