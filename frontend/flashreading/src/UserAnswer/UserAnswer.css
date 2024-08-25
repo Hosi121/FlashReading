@@ -1,0 +1,97 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  gap: 0;
+  flex-direction: column;
+}
+
+.container-column {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  gap: 0;
+}
+
+.big-background {
+  width: 1200px; /* 大きな四角の幅 */
+  height: 500px; /* 大きな四角の高さ */
+  background-color: #ccc;
+  position: relative;
+  margin-bottom: 0;
+}
+
+.big-squares {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.big-square {
+  width: 100%; /* 小さな四角の幅 */
+  height: 100%; /* 小さな四角の高さ */
+  background-color: #999;
+  border: none;
+  margin: 5px; /* 四角同士の間隔 */
+  cursor: pointer;
+  outline: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white; /* テキストの色 */
+  font-size: 48px; /* テキストのサイズ */
+}
+
+.small-background {
+  width: 1200px; /* 大きな四角の幅 */
+  height: 200px; /* 大きな四角の高さ */
+  background-color: #ccc;
+  position: relative;
+  margin-top: 0;
+}
+
+.small-squares {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.small-square {
+  width: 100%; /* 小さな四角の幅 */
+  height: 100%; /* 小さな四角の高さ */
+  background-color: #999;
+  border: 4px solid black;
+  margin: 5px; /* 四角同士の間隔 */
+  cursor: pointer;
+  outline: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white; /* テキストの色 */
+  font-size: 14px; /* テキストのサイズ */
+}
+
+.small-square:hover {
+  background-color: #777;
+}

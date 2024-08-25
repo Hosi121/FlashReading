@@ -21,7 +21,7 @@ type RegisterInput struct {
 }
 
 type LoginInput struct {
-	Email    string `json:"email" binding:"required,email"`
+	Email    string `json:"email" binding:"required"`
 	Password string `json:"password" binding:"required"`
 }
 
@@ -61,4 +61,3 @@ func GetUserByUsername(username string) (*User, error) {
 	}
 	return &user, nil
 }
-
