@@ -54,14 +54,20 @@ const VocabInputPage: React.FC = () => {
       const chatRequest: ChatRequest = {
         message: wordList,
       };
-
+  
       const response: ChatResponse = await sendChatMessage(chatRequest);
       console.log('バックエンドからの応答:', response);
-
-      // ここで /demo ページに遷移し、応答を渡す
-      navigate('/demo', { state: { sentences: response.choices[0].message.content.split('. ') } }); 
-      // 応答を文ごとに分割して配列として渡す
-
+  
+      // `Sentence:` 以降の全文を抽出
+      const fullResponse = response.choices[0].message.content;
+      const sentenceStartIndex = fullResponse.indexOf("Sentence: ");
+      const sentence = sentenceStartIndex !== -1 
+        ? fullResponse.substring(sentenceStartIndex + "Sentence: ".length).trim() 
+        : fullResponse;
+  
+      // ここで /demo ページに遷移し、sentence 全体を渡す
+      navigate('/demo', { state: { sentence } }); 
+  
     } catch (error) {
       console.error('エラーが発生しました:', error);
       // TODO: エラーハンドリング（例：エラーメッセージ表示）

@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
 import { Box, Typography } from '@mui/material';
 import { FlashDisplay } from './FlashDisplay';
+import { useLocation } from 'react-router-dom'; // useLocation をインポート
 
 export const FlashDisplayDemo: React.FC = () => {
+    const location = useLocation(); // location を使用して渡された state を受け取る
+    const sentence = location.state?.sentence || ""; // 渡された sentence 全体を使用
     const [isComplete, setIsComplete] = useState(false);
-    const sentences = [
-        "The quick brown fox jumps over the lazy dog in the lush green meadow on a sunny afternoon.",
-        "As the sun sets behind the mountains, casting long shadows across the valley, a gentle breeze rustles through the leaves of ancient oak trees.",
-        "In the bustling city streets, people hurry to and fro, their footsteps echoing off the towering skyscrapers that reach towards the cloudy sky."
-    ];
 
     const handleComplete = () => {
         setIsComplete(true);
@@ -28,7 +26,7 @@ export const FlashDisplayDemo: React.FC = () => {
                 フラッシュ表示デモ
             </Typography>
             {!isComplete ? (
-                <FlashDisplay sentences={sentences} onComplete={handleComplete} />
+                <FlashDisplay sentences={[sentence]} onComplete={handleComplete} />
             ) : (
                 <Typography variant="h5">
                     全ての文章が表示されました！
