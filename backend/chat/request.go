@@ -2,11 +2,9 @@ package chat
 
 // チャットの送信データ
 type Request struct {
-	Model    string            `json:"model"`
-	Messages []*RequestMessage `json:"messages"`
-
-	// 最大トークン
-	MaxTokens int `json:"max_tokens"`
+	Model     string            `json:"model"`      // モデルID
+	Messages  []*RequestMessage `json:"messages"`   // メッセージのリスト
+	MaxTokens int               `json:"max_tokens"` // 最大トークン数
 }
 
 func NewRequest(modelID string, messages []*RequestMessage, maxTokens int) *Request {
@@ -19,11 +17,8 @@ func NewRequest(modelID string, messages []*RequestMessage, maxTokens int) *Requ
 
 // チャットの送信メッセージ
 type RequestMessage struct {
-	// メッセージの役割(assistant, user, systemのどれか)
-	Role string `json:"role"`
-
-	// メッセージの本文
-	Content string `json:"content"`
+	Role    string `json:"role"`    // メッセージの役割 (assistant, user, system)
+	Content string `json:"content"` // メッセージの本文
 }
 
 func NewRequestMessage(role string, content string) *RequestMessage {
@@ -32,5 +27,3 @@ func NewRequestMessage(role string, content string) *RequestMessage {
 		Content: content,
 	}
 }
-
-

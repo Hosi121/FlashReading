@@ -8,7 +8,8 @@ import {
   Container
 } from '@mui/material';
 import VocabInput from './vocabInput';
-import { sendChatMessage, ChatRequest, ChatResponse } from '../../types/chat';
+import { sendChatMessage } from '../../services/chatService';
+import { ChatRequest, ChatResponse } from '../../types/chat';
 
 interface Word {
   id: number;

@@ -12,6 +12,7 @@ import Register from "./auth/Register";
 import Login from "./auth/Login";
 import WordInputPage from "./vocabInput/vocabInputPage"; // WordInputPageをインポート
 import FlashPlayDemo from "./FlashDisplay/FlashDisplayDemo"; // FlashPlayDemoをインポート
+import UserAnswer from "./UserAnswer/UserAnswer"; // UserAnswerをインポート
 
 const App: React.FC = () => {
   const [loading, setLoading] = useState(true);
@@ -44,6 +45,7 @@ const App: React.FC = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/wordinput" element={<WordInputPage />} />
           <Route path="/demo" element={<FlashPlayDemo/>}/>
+          <Route path="/answer" element={<UserAnswer correctWords={[]}/>}/>
         </Routes>
       </Router>
     </ThemeProvider>

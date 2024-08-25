@@ -1,7 +1,5 @@
-import api from "../services/api";
-
 export interface ChatRequest {
-  message: string;
+  message: string; // ユーザーが送信するメッセージ
 }
 
 export interface ChatResponse {
@@ -30,12 +28,13 @@ export interface ResponseMessage {
   content: string;
 }
 
-export const sendChatMessage = async (input: ChatRequest): Promise<ChatResponse> => {
-  try {
-    const response = await api.post<ChatResponse>("/chat/ask", input);
-    return response.data;
-  } catch (error) {
-    console.error("Failed to send chat message:", error);
-    throw error;
-  }
-};
+export interface RequestMessage {
+  role: 'assistant' | 'user' | 'system'; // メッセージの役割
+  content: string; // メッセージの本文
+}
+
+export interface ChatRequestPayload { // サーバーに送信するためのリクエストペイロード
+  model: string;
+  messages: RequestMessage[];
+  max_tokens: number;
+}
