@@ -1,10 +1,18 @@
 import React, { useState } from "react";
+import { Box, Typography, Grid, Button } from "@mui/material";
 import "./UserAnswer.css";
+
 interface UserAnswerProps {
-  correctWords: string[]; // 赤く表示する単語群　　App.tsxからpropsとしてもらう
+  correctWords: string[]; // 正解の単語群
+  allWords: string[];     // 選択肢として使う単語群
+  sentence: string;       // 表示する文章
+  onComplete: (results: boolean[]) => void; // 完了時に結果を渡す
 }
-const UserAnswer: React.FC<UserAnswerProps> = ({ correctWords }) => {
+
+const UserAnswer: React.FC<UserAnswerProps> = ({ correctWords, allWords, sentence, onComplete }) => {
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
+  const [results, setResults] = useState<boolean[]>([]);
+
   const highlightText = (text: string, word: string) => {
     const regex = new RegExp(`(${word})`, "gi");
     const parts = text.split(regex);
@@ -18,49 +26,70 @@ const UserAnswer: React.FC<UserAnswerProps> = ({ correctWords }) => {
       )
     );
   };
-  //const 関数名 = (引数) => {関数の処理;};
-  const handleNextWord = () => {
-    setCurrentWordIndex((prevIndex) => prevIndex + 1);
+
+  const handleWordSelection = (selectedWord: string) => {
+    const isCorrect = selectedWord.toLowerCase() === correctWords[currentWordIndex].toLowerCase();
+    setResults([...results, isCorrect]);
+
+    if (currentWordIndex + 1 >= correctWords.length) {
+      onComplete(results);
+    } else {
+      setCurrentWordIndex((prevIndex) => prevIndex + 1);
+    }
   };
-  // correctWords の全てが使われたらコンポーネントを非表示にする
+
   if (currentWordIndex >= correctWords.length) {
     return null;
   }
 
   return (
-    <div className="container-column">
-      <div className="big-background">
-        <div className="big-squares">
-          <div className="big-square">
-            {highlightText("This is a banana.", correctWords[currentWordIndex])}
-          </div>
-        </div>
-      </div>
-      <div className="small-background">
-        <div className="small-squares">
-          <button className="small-square" onClick={handleNextWord}>
-            りんご
-          </button>
-          <button className="small-square" onClick={handleNextWord}>
-            ブドウ
-          </button>
-          <button className="small-square" onClick={handleNextWord}>
-            みかん
-          </button>
-          <button className="small-square" onClick={handleNextWord}>
-            いちご
-          </button>
-        </div>
-      </div>
-    </div>
+    <Box 
+      display="flex" 
+      flexDirection="column" 
+      alignItems="center" 
+      justifyContent="center" 
+      minHeight="100vh" 
+      bgcolor="grey.100" 
+      p={4}
+    >
+      {/* 問題文を表示するボックス */}
+      <Box 
+        bgcolor="white" 
+        p={4} 
+        mb={4} 
+        borderRadius={2} 
+        boxShadow={3} 
+        width="100%" 
+        maxWidth="600px" 
+        textAlign="center"
+      >
+        <Typography variant="h5">
+          {highlightText(sentence, correctWords[currentWordIndex])}
+        </Typography>
+      </Box>
+
+      {/* 回答ボタンを表示するグリッド */}
+      <Grid container spacing={2} justifyContent="center" width="100%" maxWidth="600px">
+        {allWords.map((word, index) => (
+          <Grid item xs={6} key={index}>
+            <Button
+              fullWidth
+              variant="contained"
+              color="primary"
+              onClick={() => handleWordSelection(word)}
+              sx={{ 
+                height: '60px',  // 縦の高さを小さく設定
+                borderRadius: 2,
+                fontSize: '1rem' // フォントサイズも少し小さめに
+              }}
+            >
+              {word}
+            </Button>
+          </Grid>
+        ))}
+      </Grid>
+    </Box>
   );
 };
 
 export default UserAnswer;
-
-//残りの実装する機能
-//correctwordsをchatgptに渡し，問題文と選択肢を作ってもらう（他の人が作ったコンポーネントからもらうかも）
-//赤い単語の前に空白を正しく入れる
-//このファイルに書くことじゃないが，App.tcxでpropsとして入力単語をもらえるようにする
-//ボタンが押された時，正解だったかどうかを保存する
-//問題が終了した後，解答ページに移る（正解だったかどうかの情報を渡す）
