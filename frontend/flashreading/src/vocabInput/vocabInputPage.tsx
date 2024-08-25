@@ -10,6 +10,7 @@ import {
 import VocabInput from './vocabInput';
 import { sendChatMessage } from '../../services/chatService';
 import { ChatRequest, ChatResponse } from '../../types/chat';
+import { useNavigate } from 'react-router-dom'; // useNavigate をインポート
 
 interface Word {
   id: number;
@@ -19,11 +20,12 @@ interface Word {
 const VocabInputPage: React.FC = () => {
   const [currentWord, setCurrentWord] = useState<string>('');
   const [words, setWords] = useState<Word[]>([
-    { id: 1, text: 'React' },
-    { id: 2, text: 'TypeScript' },
-    { id: 3, text: 'Material-UI' }
+    { id: 1, text: 'Apple' },
+    { id: 2, text: 'Banana' },
+    { id: 3, text: 'Orange' }
   ]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const navigate = useNavigate(); // useNavigate を使用
 
   const handleWordInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCurrentWord(e.target.value);
@@ -55,7 +57,11 @@ const VocabInputPage: React.FC = () => {
 
       const response: ChatResponse = await sendChatMessage(chatRequest);
       console.log('バックエンドからの応答:', response);
-      // TODO: レスポンス処理（例：状態更新、画面遷移など）
+
+      // ここで /demo ページに遷移し、応答を渡す
+      navigate('/demo', { state: { sentences: response.choices[0].message.content.split('. ') } }); 
+      // 応答を文ごとに分割して配列として渡す
+
     } catch (error) {
       console.error('エラーが発生しました:', error);
       // TODO: エラーハンドリング（例：エラーメッセージ表示）
