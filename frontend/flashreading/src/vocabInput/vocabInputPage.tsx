@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { 
   Box, 
   Typography, 
@@ -7,10 +9,10 @@ import {
   Button,
   Container
 } from '@mui/material';
-import VocabInput from './vocabInput';
-import { sendChatMessage } from '../../services/chatService';
-import { ChatRequest, ChatResponse } from '../../types/chat';
-import { useNavigate } from 'react-router-dom';
+import VocabInput from './VocabInput';
+import { fetchChatResponse } from '../store/chatSlice';
+import { RootState } from '../store';
+import { AppDispatch } from '../store';
 
 interface Word {
   id: number;
@@ -24,8 +26,10 @@ const VocabInputPage: React.FC = () => {
     { id: 2, text: 'Banana' },
     { id: 3, text: 'Orange' }
   ]);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  
+  const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
+  const { loading, error } = useSelector((state: RootState) => state.chat);
 
   const handleWordInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCurrentWord(e.target.value);
@@ -47,30 +51,14 @@ const VocabInputPage: React.FC = () => {
   };
 
   const handleSubmit = async () => {
-    setIsLoading(true);
     const wordList = words.map(w => w.text).join(',');
     
     try {
-      const chatRequest: ChatRequest = {
-        message: wordList,
-      };
-  
-      const response: ChatResponse = await sendChatMessage(chatRequest);
-      console.log('バックエンドからの応答:', response);
-  
-      const fullResponse = response.choices[0].message.content;
-      const sentenceStartIndex = fullResponse.indexOf("Sentence: ");
-      const sentence = sentenceStartIndex !== -1 
-        ? fullResponse.substring(sentenceStartIndex + "Sentence: ".length).trim() 
-        : fullResponse;
-  
-      navigate('/demo', { state: { sentence } });
-  
+      await dispatch(fetchChatResponse({ message: wordList }));
+      navigate('/demo');
     } catch (error) {
       console.error('エラーが発生しました:', error);
-      // TODO: エラーハンドリング（例：エラーメッセージの表示）
-    } finally {
-      setIsLoading(false);
+      // エラーハンドリング（例：エラーメッセージの表示）
     }
   };
 
@@ -118,12 +106,17 @@ const VocabInputPage: React.FC = () => {
             variant="contained" 
             color="primary" 
             onClick={handleSubmit}
-            disabled={isLoading}
+            disabled={loading}
             sx={{ px: 4, py: 1, fontSize: '1.1rem' }}
           >
-            {isLoading ? '送信中...' : '決定'}
+            {loading ? '送信中...' : '決定'}
           </Button>
         </Box>
+        {error && (
+          <Typography color="error" align="center" sx={{ mt: 2 }}>
+            エラーが発生しました: {error}
+          </Typography>
+        )}
       </Container>
     </Box>
   );

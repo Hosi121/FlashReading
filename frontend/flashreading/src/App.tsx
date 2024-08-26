@@ -4,8 +4,9 @@ import {
   Route,
   Routes,
   Navigate,
-  useNavigate,
 } from "react-router-dom";
+import { Provider } from "react-redux";
+import { store } from "./store";
 import theme from "./theme";
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -24,6 +25,7 @@ const App: React.FC = () => {
   };
 
   return (
+    <Provider store={store}>
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Router>
@@ -47,6 +49,7 @@ const App: React.FC = () => {
         </Routes>
       </Router>
     </ThemeProvider>
+    </Provider>
   );
 };
 
