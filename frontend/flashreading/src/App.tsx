@@ -11,7 +11,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import Register from "./auth/Register";
 import Login from "./auth/Login";
-import WordInputPage from "./vocabInput/vocabInputPage";
+import VocabInputPage from "./vocabInput/vocabInputPage";
 import FlashPlayDemo from "./FlashDisplay/FlashDisplayDemo";
 import UserAnswer from "./UserAnswer/UserAnswer";
 
@@ -31,7 +31,7 @@ const App: React.FC = () => {
           <Route path="/" element={<Navigate to="/login" />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/wordinput" element={<WordInputPage />} />
+          <Route path="/wordinput" element={<VocabInputPage />} />
           <Route path="/demo" element={<FlashPlayDemo />} />
           <Route 
             path="/answer" 
