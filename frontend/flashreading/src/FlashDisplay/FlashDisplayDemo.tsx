@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { Box, Typography } from '@mui/material';
 import { FlashDisplay } from './FlashDisplay';
-import { useLocation } from 'react-router-dom'; // useLocation をインポート
+import { RootState } from '../store';
 
 export const FlashDisplayDemo: React.FC = () => {
-    const location = useLocation(); // location を使用して渡された state を受け取る
-    const sentence = location.state?.sentence || ""; // 渡された sentence 全体を使用
     const [isComplete, setIsComplete] = useState(false);
+    const chatResponse = useSelector((state: RootState) => state.chat.response);
+
+    const sentence = chatResponse?.choices[0]?.message.content || "";
 
     const handleComplete = () => {
         setIsComplete(true);
@@ -26,7 +28,13 @@ export const FlashDisplayDemo: React.FC = () => {
                 フラッシュ表示デモ
             </Typography>
             {!isComplete ? (
-                <FlashDisplay sentences={[sentence]} onComplete={handleComplete} />
+                chatResponse ? (
+                    <FlashDisplay sentences={[sentence]} onComplete={handleComplete} />
+                ) : (
+                    <Typography variant="h6">
+                        データを読み込み中...
+                    </Typography>
+                )
             ) : (
                 <Typography variant="h5">
                     全ての文章が表示されました！
